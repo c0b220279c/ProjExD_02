@@ -33,7 +33,7 @@ def main():
     kk_img5 = pg.transform.flip(kk_img, True, False)
     kk_img2 = pg.transform.rotate(kk_img, 45)
     kk_img3 = pg.transform.rotate(kk_img5, 90)
-    kk_img4 = pg.transform.rotate(kk_img5, 135)
+    kk_img4 = pg.transform.rotate(kk_img5, 45)
     kk_img6 = pg.transform.rotate(kk_img5, 225)
     kk_img7 = pg.transform.rotate(kk_img, 270)
     kk_img8 = pg.transform.rotate(kk_img, 315)
