@@ -28,9 +28,25 @@ def main():
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     """こうかとん"""
     kk_img = pg.image.load("ex02/fig/3.png")
+    kk_img0 = pg.image.load("ex02/fig/8.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    kk_img5 = pg.transform.flip(kk_img, True, False)
+    kk_img2 = pg.transform.rotate(kk_img, 45)
+    kk_img3 = pg.transform.rotate(kk_img5, 90)
+    kk_img4 = pg.transform.rotate(kk_img5, 135)
+    kk_img6 = pg.transform.rotate(kk_img5, 225)
+    kk_img7 = pg.transform.rotate(kk_img, 270)
+    kk_img8 = pg.transform.rotate(kk_img, 315)
+    kk_img0 = pg.transform.rotozoom(kk_img0, 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = (900, 400)
+    kk_dic = {
+        (-5, 0):kk_img , (-5,-5):kk_img2 ,
+        (0, -5):kk_img3 , (+5, -5):kk_img4 ,
+        (+5, 0):kk_img5 , (+5, +5):kk_img6 ,
+        (0, +5):kk_img7 , (-5, +5):kk_img8 ,
+        }
+    
     """ばくだん"""
     bd_img = pg.Surface((20, 20))
     bd_img.set_colorkey((0, 0, 0))
@@ -48,6 +64,8 @@ def main():
                 return
             
         if kk_rct.colliderect(bd_rct):
+            screen.blit(kk_img0, kk_rct)
+            pg.display.update()
             print("ゲームオーバー")
             return
 
@@ -60,12 +78,20 @@ def main():
             if key_lst[key]:
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
+                sm = tuple(sum_mv)
+                screen.blit(kk_dic[sm], kk_rct)
+                pg.display.update()
+            else:
+                screen.blit(kk_img, kk_rct)
+                pg.display.update()
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-        screen.blit(kk_img, kk_rct)
+        
         """ばくだん"""
-        bd_rct.move_ip(vx, vy)
+        accs = [a for a in range(1, 11)] #加速度のリスト
+        avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)] 
+        bd_rct.move_ip(avx, avy)
         yoko, tate = check_bound(bd_rct)
         if not yoko:
             vx *= -1
